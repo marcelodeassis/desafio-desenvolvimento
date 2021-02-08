@@ -1,0 +1,20 @@
+version: "3"
+
+services:
+  postgres:
+    image: postgres:13
+    container_name: postgres_desafio
+    #volumes:
+    #  - postgresData:/var/lib/postgresql/data
+    expose:
+      - 5432
+    ports:
+      - 5432:5432/tcp
+    environment:
+      - POSTGRES_PASSWORD=desafio
+      - POSTGRES_USER=desafio
+      - POSTGRES_DB=desafio
+    restart: always
+
+#volumes:
+#  postgresData:
