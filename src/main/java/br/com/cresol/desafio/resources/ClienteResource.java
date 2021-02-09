@@ -1,13 +1,11 @@
 package br.com.cresol.desafio.resources;
 
-import br.com.cresol.desafio.dto.ClienteDTO;
 import br.com.cresol.desafio.model.Cliente;
 import br.com.cresol.desafio.service.ClienteService;
 
 import org.jboss.resteasy.annotations.jaxrs.PathParam;
 import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
-import javax.ws.rs.core.Response;
 import java.util.List;
 
 @Path("/cliente")
@@ -32,6 +30,7 @@ public class ClienteResource {
         return clienteService.listAll() ;
     }
 
+    /*
     @POST
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
@@ -57,4 +56,5 @@ public class ClienteResource {
         clienteService.deleteCliente(id);
         return Response.ok().build();
     }
+    */
 }

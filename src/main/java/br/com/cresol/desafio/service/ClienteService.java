@@ -2,7 +2,7 @@ package br.com.cresol.desafio.service;
 
 import br.com.cresol.desafio.exception.GenericException;
 import br.com.cresol.desafio.repository.ClienteRepository;
-import br.com.cresol.desafio.dto.ClienteDTO;
+import br.com.cresol.desafio.dto.ClientePayload;
 import br.com.cresol.desafio.model.Cliente;
 import br.com.cresol.desafio.model.ClienteMapper;
 
@@ -34,6 +34,10 @@ public class ClienteService {
         Optional<Cliente> optional = clienteRepository.findByIdOptional(id);
         return optional.orElseThrow(() -> new GenericException("Usuário inexistente"));
     }
+    public Cliente getClienteByCpf(String cpf){
+        Optional<Cliente> optional = clienteRepository.findByCpfOptional(cpf);
+        return optional.orElseThrow(() -> new GenericException("Usuário inexistente"));
+    }
 
     @Transactional
     public void deleteCliente(Long id){
@@ -43,12 +47,12 @@ public class ClienteService {
     }
 
     @Transactional
-    public void persistCliente(ClienteDTO payload) throws GenericException {
-        persistCliente(payload, null);
+    public Cliente persistCliente(ClientePayload payload) throws GenericException {
+       return persistCliente(payload, null);
     }
     @Transactional
-    public void persistCliente(ClienteDTO payload, Long id) {
-        Set<ConstraintViolation<ClienteDTO>> validacoes = validator.validate(payload);
+    public Cliente persistCliente(ClientePayload payload, Long id) {
+        Set<ConstraintViolation<ClientePayload>> validacoes = validator.validate(payload);
         List<String> errorMsgs = validacoes.stream().map(cv -> cv.getMessage()).collect(Collectors.toList());
 
         if(id == null && clienteRepository.isCpfUsado(payload.getCpf())){
@@ -70,6 +74,15 @@ public class ClienteService {
         }
 
         clienteRepository.persist(c);
+        return c;
+    }
+
+    public Cliente persistSeNaoExiste(ClientePayload payload){
+        try{
+            return this.getClienteByCpf(payload.getCpf());
+        }catch (GenericException e){
+            return persistCliente(payload);
+        }
     }
 
 }

@@ -10,7 +10,7 @@ import javax.validation.constraints.Size;
 
 @Getter
 @Setter
-public class ClienteDTO {
+public class ClientePayload {
 
     @CPF(message = "CPF precisa ser válido")
     private String cpf;
